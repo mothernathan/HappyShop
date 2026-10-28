@@ -1,0 +1,10 @@
+Order ID: 3 
+State: ORDERED 
+OrderedDateTime: 2026-10-28 11:21:33 
+ProgressingDateTime:  
+CollectedDateTime: 
+Items:
+ 0001    toast              ( 1) £  15.19
+--------------------------------------------
+ Total                               £  15.19
+

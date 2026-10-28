@@ -18,7 +18,7 @@ public class Product implements Comparable<Product> {
     private String proDescription;
     private String proImageName;
     private double unitPrice;
-    private int orderedQuantity =1; //The quantity of this product in the customer's order.
+    private int orderedQuantity =0; //The quantity of this product in the customer's order.
     private int stockQuantity;//
 
     /**
@@ -61,6 +61,12 @@ public class Product implements Comparable<Product> {
 
     public void setStockQuantity(int stockQuantity){
         this.stockQuantity = stockQuantity;
+    }
+
+    // new set method that counts up 1 every time the user keeps adding a
+    // product to the checkout
+    public void addOrderedQuantity(int orderAdded){
+        orderedQuantity = orderedQuantity + orderAdded;
     }
 
     @Override
