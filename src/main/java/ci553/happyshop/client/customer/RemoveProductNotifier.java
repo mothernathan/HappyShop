@@ -43,7 +43,7 @@ public class RemoveProductNotifier {
 
     // Create the Scene (only once)
     private void createScene() {
-        Label laTitle = new Label("\u26A0 Some changes have been made to your trolley."); // ⚠️
+        Label laTitle = new Label("\u26A0 Insufficient Products Detected."); // ⚠️
         laTitle.setStyle(UIStyle.alertTitleLabelStyle);
 
         taRemoveMsg = new TextArea();
@@ -80,9 +80,9 @@ public class RemoveProductNotifier {
     }
 
     private String cutomerActionBuilder(){
-        StringBuilder actions = new StringBuilder(" \u26A1 You can now: \n");
-        actions.append("\u2022 Checkout your trolley as it is \n");
-        actions.append("\u2022 Re-add the removed products (up to the available quantity) \n");
+        StringBuilder actions = new StringBuilder(" \u26A1 Please: \n");
+        actions.append("\u2022 Adjust the quantity to the stock available \n");
+        actions.append("\u2022 Decrease quantity using the '-' button \n");
         actions.append("\u2022 Or cancel your trolley if you no longer wish to proceed.\n");
         actions.append("Thank you for understanding! \n");
         return  actions.toString();
@@ -100,7 +100,7 @@ public class RemoveProductNotifier {
         window.setTitle("🛒Products removal notifier");
         window.setScene(scene);
 
-        //get bounds of betterCustomer window which trigers the ProductRemovalNotifier
+        //get bounds of betterCustomer window which triggers the ProductRemovalNotifier
         // so that we can put the ProductRemovalNotifier at a suitable position
         WindowBounds bounds = cusView.getWindowBounds();
         window.setX(bounds.x + bounds.width -WIDTH -10); // Position to the right of warehouse window

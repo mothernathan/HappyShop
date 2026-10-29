@@ -23,4 +23,12 @@ public class CustomerController {
         }
     }
 
+    // New: row buttons need to pass a product ID, so they can't go through doAction(String)
+    public void plusOne(String id) {
+        cusModel.plusOne(id);
+    }
+
+    public void minusOne(String id) {
+        cusModel.minusOne(id);
+    }
 }

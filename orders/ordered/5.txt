@@ -1,0 +1,10 @@
+Order ID: 5 
+State: ORDERED 
+OrderedDateTime: 2026-10-28 12:10:57 
+ProgressingDateTime:  
+CollectedDateTime: 
+Items:
+ 0004    Watch              ( 1) £  29.99
+--------------------------------------------
+ Total                               £  29.99
+

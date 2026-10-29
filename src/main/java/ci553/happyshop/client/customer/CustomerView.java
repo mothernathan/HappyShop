@@ -14,7 +14,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
-
+import ci553.happyshop.catalogue.Product;
+import java.util.ArrayList;
 /**
  * The CustomerView is separated into two sections by a line :
  *
@@ -42,7 +43,8 @@ public class CustomerView  {
     //four UI controls needs updating when program going on
     private ImageView ivProduct; //image area in searchPage
     private Label lbProductText;//product text info in searchPage
-    private TextArea taTrolley; //in trolley Page
+    private VBox vbTrolleyRows; // one HBox per product, rebuilt on every update
+    private Label lbTotal; // total price shown under the trolley rows
     private TextArea taReceipt;//in receipt page
 
     // Holds a reference to this CustomerView window for future access and management
@@ -127,9 +129,15 @@ public class CustomerView  {
         Label laPageTitle = new Label("🛒🛒  Trolley 🛒🛒");
         laPageTitle.setStyle(UIStyle.labelTitleStyle);
 
-        taTrolley = new TextArea();
-        taTrolley.setEditable(false);
-        taTrolley.setPrefSize(WIDTH/2, HEIGHT-50);
+        //changed from a textfield to vbox to accommodate for buttons
+        //for each product row in the trolley
+        vbTrolleyRows = new VBox(5);
+        ScrollPane spTrolley = new ScrollPane(vbTrolleyRows);
+        spTrolley.setFitToWidth(true);
+        spTrolley.setPrefSize(WIDTH/2, HEIGHT-50);
+        //total amount label must be made separately
+        lbTotal = new Label("Total: £0.00");
+        lbTotal.setStyle(UIStyle.labelStyle);
 
         Button btnCancel = new Button("Cancel");
         btnCancel.setOnAction(this::buttonClicked);
@@ -143,7 +151,7 @@ public class CustomerView  {
         hbBtns.setStyle("-fx-padding: 15px;");
         hbBtns.setAlignment(Pos.CENTER);
 
-        vbTrolleyPage = new VBox(15, laPageTitle, taTrolley, hbBtns);
+        vbTrolleyPage = new VBox(15, laPageTitle, spTrolley, lbTotal, hbBtns);
         vbTrolleyPage.setPrefWidth(COLUMN_WIDTH);
         vbTrolleyPage.setAlignment(Pos.TOP_CENTER);
         vbTrolleyPage.setStyle("-fx-padding: 15px;");
@@ -185,9 +193,10 @@ public class CustomerView  {
 
 
     public void update(String productImageName, String productTextInfo, String trolley, String receipt) {
+        System.out.println("VIEW UPDATE REACHED");
         ivProduct.setImage(new Image(productImageName));
         lbProductText.setText(productTextInfo);
-        taTrolley.setText(trolley);
+
         if (!receipt.equals("")) {
             showTrolleyOrReceiptPage(vbReceiptPage);
             taReceipt.setText(receipt);
@@ -206,5 +215,28 @@ public class CustomerView  {
     WindowBounds getWindowBounds() {
         return new WindowBounds(viewWindow.getX(), viewWindow.getY(),
                   viewWindow.getWidth(), viewWindow.getHeight());
+    }
+
+    void updateTrolleyRows(ArrayList<Product> products) {
+        vbTrolleyRows.getChildren().clear();
+        double total = 0;
+
+        for (Product p : products) {
+            String id = p.getProductId();
+            double lineTotal = p.getUnitPrice() * p.getOrderedQuantity();
+            total += lineTotal;
+
+            Label lbl = new Label(String.format("%s  %s  x%d", id, p.getProductDescription(), p.getOrderedQuantity()));
+            lbl.setPrefWidth(COLUMN_WIDTH - 110);
+            lbl.setWrapText(true);
+
+            Button minus = new Button("-");
+            minus.setOnAction(e -> cusController.minusOne(id));
+            Button plus = new Button("+");
+            plus.setOnAction(e -> cusController.plusOne(id));
+
+            vbTrolleyRows.getChildren().add(new HBox(8, lbl, minus, plus));
+        }
+        lbTotal.setText(String.format("Total: £%.2f", total));
     }
 }

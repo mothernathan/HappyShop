@@ -21,6 +21,7 @@ public class CustomerModel {
     public CustomerView cusView; //part of MVC
     private DatabaseRW databaseRW; //Interface type, not specific implementation
                                   //Benefits: Flexibility: Easily change the database implementation.
+    public RemoveProductNotifier removeProduct; //product removal window
 
     private Product searchResult =null; // product found from search
     private Trolley trolley =  new OrganisedTrolley(); // holds the products currently in the customer's trolley
@@ -135,6 +136,11 @@ public class CustomerModel {
                 //remember close the message window where appropriate (using method closeNotifierWindow() of RemoveProductNotifier class)
                 searchResultProductText = "Checkout failed due to insufficient stock for the following products:\n" + errorMsg.toString();
                 System.out.println("stock is not enough");
+                if (removeProduct == null) {
+                    removeProduct = new RemoveProductNotifier();
+                    removeProduct.cusView = cusView;
+                }
+                removeProduct.showRemovalMsg(errorMsg.toString());
             }
         }
         else{
@@ -186,6 +192,8 @@ public class CustomerModel {
             searchResultImageName = "imageHolder.jpg";
         }
         cusView.update(searchResultImageName, searchResultProductText, trolleyContentsText, receiptContentsText);
+
+        cusView.updateTrolleyRows(trolley.getProducts());
     }
      // extra notes:
      //Path.toUri(): Converts a Path object (a file or a directory path) to a URI object.
@@ -195,4 +203,39 @@ public class CustomerModel {
     public Trolley getTrolley() {
         return trolley;
     }
+
+    public void plusOne(String productId) {
+        for (Product p : trolley.getProducts()) {
+            if (p.getProductId().equals(productId)) {
+                p.addOrderedQuantity(1);
+                break;
+            }
+        }
+        refreshTrolley();
+    }
+
+    public void minusOne(String productId) {
+        ArrayList<Product> list = trolley.getProducts();
+        for (int i = 0; i < list.size(); i++) {
+            Product p = list.get(i);
+            //checks the product id that the button is being pressed
+            //then either decrements it or remove from the list
+            if (p.getProductId().equals(productId)) {
+                if (p.getOrderedQuantity() > 1) {
+                    p.addOrderedQuantity(-1);   // one fewer
+                } else {
+                    list.remove(i);             // last one, so remove the row
+                }
+                break;
+            }
+        }
+        refreshTrolley();
+    }
+
+    private void refreshTrolley() {
+        trolleyContentsText = trolley.getProducts().isEmpty()
+                ? "" : ProductListFormatter.buildString(trolley.getProducts());
+        updateView();
+    }
+
 }
