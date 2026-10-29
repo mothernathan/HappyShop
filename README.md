@@ -1,3 +1,20 @@
+hello i have no clue if im using github right :P
+             .-------------.             
+          .-'               '-.          
+        .'                     '.        
+       /                         \       
+      /     [ ]           [ ]     \      
+     /                             \     
+
+    |                               |    
+    |                               |    
+     \       '.           .'       /     
+      \        '---------'        /      
+       \                         /       
+        .'                     .'        
+          '-.               .-'          
+             '-------------'             
+
 # HappyShop
 
 A JavaFX project developed in IntelliJ using Maven (JDK 25, JavaFX 25), designed for CI553 coursework.
