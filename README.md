@@ -5,7 +5,6 @@ hello i have no clue if im using github right :P
        /                         \       
       /     [ ]           [ ]     \      
      /                             \     
-
     |                               |    
     |                               |    
      \       '.           .'       /     
